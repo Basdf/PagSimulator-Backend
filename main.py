@@ -1,10 +1,18 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from typing import Optional
+from fastapi.middleware.cors import CORSMiddleware
 from pagingPolicy import pagingPolicy
 
 app = FastAPI()
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 class Options(BaseModel):
     addresses: str = Field(description="ADDRESSES a set of comma-separated pages to access; -1 means randomly generate")
@@ -29,7 +37,7 @@ class Options(BaseModel):
         }
 
 
-@app.post("/pagingPolicy")
+@app.post("/api/v1/pagingPolicy")
 async def pagSimulator(options: Options):
     policyList = ["FIFO", "LRU", "MRU", "OPT", "UNOPT", "RAND", "CLOCK"]
 
