@@ -14,14 +14,22 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 class Options(BaseModel):
-    addresses: str = Field(description="ADDRESSES a set of comma-separated pages to access; -1 means randomly generate")
-    numaddrs: Optional[int] = Field(description="NUMADDRS if addresses is -1, this is the number of addrs to generate (Optional)")
-    policy: str = Field(description="POLICY replacement policy: FIFO, LRU, MRU, OPT, UNOPT, RAND, CLOCK")
-    clockbits: Optional[int] = Field(description="CLOCKBITS for CLOCK policy, how many clock bits to use (Optional)")
-    cachesize: int = Field(description="CACHESIZE size of the page cache, in pages")
-    maxpage: Optional[int] = Field(description="MAXPAGE if randomly generating page accesses, this is the max page number (Optional)")
-    seed: Optional[int] = Field(description="SEED  random number seed (Optional)")
+    addresses: str = Field(
+        description="ADDRESSES a set of comma-separated pages to access; -1 means randomly generate")
+    numaddrs: Optional[int] = Field(
+        description="NUMADDRS if addresses is -1, this is the number of addrs to generate (Optional)")
+    policy: str = Field(
+        description="POLICY replacement policy: FIFO, LRU, MRU, OPT, UNOPT, RAND, CLOCK")
+    clockbits: Optional[int] = Field(
+        description="CLOCKBITS for CLOCK policy, how many clock bits to use (Optional)")
+    cachesize: int = Field(
+        description="CACHESIZE size of the page cache, in pages")
+    maxpage: Optional[int] = Field(
+        description="MAXPAGE if randomly generating page accesses, this is the max page number (Optional)")
+    seed: Optional[int] = Field(
+        description="SEED  random number seed (Optional)")
 
     class Config:
         schema_extra = {
@@ -44,8 +52,9 @@ async def pagSimulator(options: Options):
     if not options.policy in policyList:
         return {"Error": "Policy %s is not yet implemented" % options.policy}
 
-    if not "," in options.addresses:
-        return {"Error": "Wrong format in addresses"}
+    if options.addresses != '-1':
+        if not "," in options.addresses:
+            return {"Error": "Wrong format in addresses"}
 
     addresses = options.addresses
     policy = options.policy
