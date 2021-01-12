@@ -21,7 +21,7 @@ class Options(BaseModel):
     numaddrs: Optional[int] = Field(
         description="NUMADDRS if addresses is -1, this is the number of addrs to generate (Optional)")
     policy: str = Field(
-        description="POLICY replacement policy: FIFO, LRU, MRU, OPT, UNOPT, RAND, CLOCK")
+        description="POLICY replacement policy: FIFO, LRU, MRU, OPT, UNOPT, RAND")
     clockbits: Optional[int] = Field(
         description="CLOCKBITS for CLOCK policy, how many clock bits to use (Optional)")
     cachesize: int = Field(
