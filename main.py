@@ -47,7 +47,7 @@ class Options(BaseModel):
 
 @app.post("/api/v1/pagingPolicy")
 async def pagSimulator(options: Options):
-    policyList = ["FIFO", "LRU", "MRU", "OPT", "UNOPT", "RAND", "CLOCK"]
+    policyList = ["FIFO", "LRU", "MRU", "OPT", "UNOPT", "RAND"]
 
     if not options.policy in policyList:
         return {"Error": "Policy %s is not yet implemented" % options.policy}
