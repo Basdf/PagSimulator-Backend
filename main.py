@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from typing import Optional
+import re
 from fastapi.middleware.cors import CORSMiddleware
 from pagingPolicy import pagingPolicy
+
 
 app = FastAPI()
 
@@ -47,13 +49,14 @@ class Options(BaseModel):
 
 @app.post("/api/v1/pagingPolicy")
 async def pagSimulator(options: Options):
+    RegEx = re.compile(r'^(?!(,))+((\d+)(,\d+)+$)')
     policyList = ["FIFO", "LRU", "MRU", "OPT", "UNOPT", "RAND"]
 
     if not options.policy in policyList:
         return {"Error": "Policy %s is not yet implemented" % options.policy}
 
     if options.addresses != '-1':
-        if not "," in options.addresses:
+        if not RegEx.match(options.addresses):
             return {"Error": "Wrong format in addresses"}
 
     addresses = options.addresses
